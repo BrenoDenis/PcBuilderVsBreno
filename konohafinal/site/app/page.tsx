@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import HelpDock from '@/components/HelpDock';
+import LateralFAQDrawer from '@/components/ui/LateralFAQDrawer';
 import Avisos from '@/components/ui/Avisos';
 import Confirmacao from '@/components/ui/Confirmacao';
 import Inicio from '@/components/telas/Inicio';
@@ -54,6 +55,7 @@ export default function Page() {
       </main>
       <Footer />
       <HelpDock />
+      <LateralFAQDrawer />
       <Avisos />
       <Confirmacao />
     </>

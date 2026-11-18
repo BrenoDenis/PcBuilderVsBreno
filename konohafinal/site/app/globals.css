@@ -3,24 +3,24 @@
 @tailwind utilities;
 
 /* Layout: narrativa vertical sobre um palco 3D fixo; papel branco, tinta preta, um laranja forte. */
-/* Tema único e claro, de propósito: os nomes antigos dos tokens foram mantidos para não mexer nos componentes. */
+/* Tema Ãºnico e claro, de propÃ³sito: os nomes antigos dos tokens foram mantidos para nÃ£o mexer nos componentes. */
 :root {
-  --void: #ffffff; /* papel */
-  --ink: #f6f4f1; /* papel alternado das seções */
-  --plum: #ece8e3;
-  --violet: #ff6a13; /* laranja principal (botões, barras) */
-  --neon: #ff6a13; /* laranja de bordas e ícones */
-  --lilac: #b13a0a; /* laranja escuro: único laranja permitido em texto pequeno (≥ 5:1) */
-  --magenta: #ff6a13; /* linhas de energia */
-  --cyan: #111111; /* linhas de dados, lado B dos comparativos */
-  --fg: #111111; /* tinta */
-  --fg2: #3b3632; /* texto corrido */
-  --muted: #736b64;
-  --line: rgba(17, 17, 17, 0.12);
+  --void: #08090f; /* fundo obsidian cyberpunk */
+  --ink: #0c0d16; /* superfícies de cards */
+  --plum: #131522; /* superfícies elevadas */
+  --violet: #00ff88; /* neon verde principal */
+  --neon: #00ff88; /* neon verde de bordas e ícones */
+  --lilac: #00ff88; /* verde neon de destaque */
+  --magenta: #b026ff; /* neon roxo edgerunners */
+  --cyan: #00f0ff; /* ciano elétrico */
+  --fg: #f9fafb; /* texto claro */
+  --fg2: #9ca3af; /* texto secundário */
+  --muted: #64748b; /* texto atenuado */
+  --line: rgba(0, 255, 136, 0.18);
   --font-display: 'Unbounded Variable';
   --font-body: 'Manrope Variable';
   --font-mono: 'JetBrains Mono Variable';
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 html {
@@ -104,7 +104,7 @@ h3 {
   color: var(--lilac);
 }
 .text-gradient {
-  background: linear-gradient(100deg, #e8590c 0%, #d9480f 100%); /* ≥ 3:1, só em títulos grandes */
+  background: linear-gradient(135deg, #00ff88 0%, #00f0ff 40%, #b026ff 100%); /* â‰¥ 3:1, sÃ³ em tÃ­tulos grandes */
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -113,9 +113,9 @@ h3 {
   font-variant-numeric: tabular-nums;
 }
 
-/* ---------- superfícies ---------- */
+/* ---------- superfÃ­cies ---------- */
 .glass {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(13, 15, 25, 0.85);
   border: 1px solid var(--line);
   box-shadow: 0 1px 0 rgba(17, 17, 17, 0.03), 0 18px 40px -28px rgba(17, 17, 17, 0.28);
   -webkit-backdrop-filter: blur(10px);
@@ -135,7 +135,7 @@ h3 {
   border-color: #111 !important;
 }
 
-/* ---------- rótulos 3D do resumo ---------- */
+/* ---------- rÃ³tulos 3D do resumo ---------- */
 .pc-label {
   font-family: var(--font-mono), 'JetBrains Mono', monospace;
   font-size: 11px;
@@ -259,7 +259,7 @@ h3 {
   }
 }
 
-/* painéis inclinados: preenchimento por clip-path, borda neon por pseudo-elemento */
+/* painÃ©is inclinados: preenchimento por clip-path, borda neon por pseudo-elemento */
 .hud-panel {
   isolation: isolate;
 }
@@ -330,7 +330,7 @@ h3 {
   box-shadow: 4px 4px 0 #111;
 }
 
-/* ---------- catálogo ---------- */
+/* ---------- catÃ¡logo ---------- */
 .catalog-art {
   --glow: rgba(17, 17, 17, 0.06);
   transition: filter 0.4s ease, color 0.4s ease, transform 0.5s ease;
@@ -341,7 +341,7 @@ h3 {
   color: #111;
 }
 
-/* ---------- fans do PC de referência (monocromáticas) ---------- */
+/* ---------- fans do PC de referÃªncia (monocromÃ¡ticas) ---------- */
 @keyframes ring-spin {
   to {
     transform: rotate(360deg);
@@ -359,7 +359,7 @@ h3 {
   animation: ring-spin 6s linear infinite;
 }
 
-/* ---------- alvos de toque (heurística 5: evitar deslizes) ---------- */
+/* ---------- alvos de toque (heurÃ­stica 5: evitar deslizes) ---------- */
 @media (pointer: coarse), (max-width: 1023px) {
   main button,
   main select,
@@ -385,7 +385,7 @@ h3 {
 
 @layer components {
 /* ==========================================================================
-   Componentes das telas de tarefa (montar, PCs prontos, quiz, dúvidas).
+   Componentes das telas de tarefa (montar, PCs prontos, quiz, dÃºvidas).
    Mesma identidade do guia, com tipografia mais calma para ler e decidir.
    ========================================================================== */
 .tela {
@@ -407,7 +407,7 @@ h3 {
   color: var(--fg2);
 }
 .cartao {
-  background: #fff;
+  background: #0d0f19;
   border: 1px solid var(--line);
   border-radius: 18px;
 }
@@ -523,3 +523,4 @@ h3 {
 }
 
 }
+

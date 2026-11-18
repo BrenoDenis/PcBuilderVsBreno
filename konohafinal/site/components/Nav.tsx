@@ -9,20 +9,26 @@ import { quantidadeEscolhida, useMontagem } from '@/lib/montagem';
 import BuscaGlobal from './BuscaGlobal';
 import LoginGoogle from './LoginGoogle';
 
-const MENU: { id: Tela; rotulo: string }[] = [
-  { id: 'aprender', rotulo: 'Aprender' },
-  { id: 'montar', rotulo: 'Monte seu PC' },
-  { id: 'gamer', rotulo: 'PC Gamer' },
-  { id: 'trabalho', rotulo: 'PC Trabalho' },
-  { id: 'quiz', rotulo: 'Quiz' },
-  { id: 'duvidas', rotulo: 'Dúvidas' },
-  { id: 'equipe', rotulo: 'Sobre a equipe' },
+interface ItemNavegacao {
+  id: string;
+  rotulo: string;
+  href: string;
+  isTela?: boolean;
+}
+
+const MENU: ItemNavegacao[] = [
+  { id: 'inicio', rotulo: 'Início', href: '#inicio', isTela: true },
+  { id: 'aprender', rotulo: 'Estudo Livre', href: '#aprender', isTela: true },
+  { id: 'escritorio', rotulo: 'Escritório', href: '#escritorio' },
+  { id: 'gamer-section', rotulo: 'Gamer', href: '#gamer-section' },
+  { id: 'montagem-livre', rotulo: 'Montagem Livre', href: '#montagem-livre' },
+  { id: 'montar', rotulo: 'Monte seu PC', href: '#montar', isTela: true },
 ];
 
 function Marca() {
   return (
-    <a href="#inicio" className="display shrink-0 py-3 text-[0.95rem] font-[800] uppercase tracking-wide" aria-label="Konoha Hardware, ir para o início">
-      Konoha<span className="text-[var(--violet)]">.</span>HW
+    <a href="#inicio" className="display shrink-0 py-3 text-[1rem] font-[800] uppercase tracking-wider text-white" aria-label="PC Builder, ir para o início">
+      Konoha<span className="text-[#00ff88]">.</span>HW
     </a>
   );
 }
@@ -33,26 +39,26 @@ function SeloMontagem() {
   const n = quantidadeEscolhida(selecao);
   if (!n) return null;
   return (
-    <span className="tnum ml-1.5 rounded-full bg-[var(--violet)] px-1.5 py-[1px] text-[0.68rem] font-bold text-[#111]" aria-label={`${n} de 8 peças escolhidas`}>
+    <span className="tnum ml-1.5 rounded-full bg-[#00ff88] px-1.5 py-[1px] text-[0.68rem] font-bold text-black shadow-[0_0_8px_rgba(0,255,136,0.6)]" aria-label={`${n} de 8 peças escolhidas`}>
       {n}/8
     </span>
   );
 }
 
-function LinkTela({ id, rotulo, atual, aoClicar, grande }: { id: Tela; rotulo: string; atual: boolean; aoClicar?: () => void; grande?: boolean }) {
+function LinkNavegacao({ item, atual, aoClicar, grande }: { item: ItemNavegacao; atual: boolean; aoClicar?: () => void; grande?: boolean }) {
   if (grande) {
     return (
       <a
-        href={`#${id}`}
+        href={item.href}
         onClick={aoClicar}
         aria-current={atual ? 'page' : undefined}
-        className={`display flex items-center justify-between border-b border-[var(--line)] py-3.5 text-[1.15rem] font-[700] ${atual ? 'text-[var(--lilac)]' : 'text-[var(--fg)]'}`}
+        className={`display flex items-center justify-between border-b border-gray-800 py-3.5 text-[1.1rem] font-[700] transition-colors ${atual ? 'text-[#00ff88]' : 'text-gray-200 hover:text-[#00ff88]'}`}
       >
         <span>
-          {rotulo}
-          {id === 'montar' && <SeloMontagem />}
+          {item.rotulo}
+          {item.id === 'montar' && <SeloMontagem />}
         </span>
-        <span aria-hidden className="text-[var(--muted)]">
+        <span aria-hidden className="text-gray-500">
           {atual ? '●' : '→'}
         </span>
       </a>
@@ -60,15 +66,15 @@ function LinkTela({ id, rotulo, atual, aoClicar, grande }: { id: Tela; rotulo: s
   }
   return (
     <a
-      href={`#${id}`}
+      href={item.href}
       aria-current={atual ? 'page' : undefined}
-      className={`relative flex items-center rounded-full px-2 py-1.5 text-[0.82rem] font-semibold transition-colors xl:px-3 xl:py-2 xl:text-[0.86rem] ${
-        atual ? 'text-[var(--fg)]' : 'text-[var(--muted)] hover:text-[var(--fg)]'
+      className={`relative flex items-center rounded-full px-2.5 py-1.5 text-[0.82rem] font-semibold transition-colors xl:px-3.5 xl:py-2 xl:text-[0.86rem] ${
+        atual ? 'text-[#00ff88]' : 'text-gray-300 hover:text-white'
       }`}
     >
-      {rotulo}
-      {id === 'montar' && <SeloMontagem />}
-      {atual && <motion.span layoutId="nav-dot" className="absolute inset-x-2 -bottom-0.5 h-[2px] rounded bg-[var(--violet)] xl:inset-x-3" />}
+      {item.rotulo}
+      {item.id === 'montar' && <SeloMontagem />}
+      {atual && <motion.span layoutId="nav-dot" className="absolute inset-x-2 -bottom-0.5 h-[2px] rounded bg-[#00ff88] shadow-[0_0_8px_rgba(0,255,136,0.8)] xl:inset-x-3" />}
     </a>
   );
 }
@@ -76,7 +82,7 @@ function LinkTela({ id, rotulo, atual, aoClicar, grande }: { id: Tela; rotulo: s
 function BarraProgresso() {
   const { scrollYProgress } = useScroll();
   const x = useSpring(scrollYProgress, { stiffness: 120, damping: 30 });
-  return <motion.div className="h-[2px] origin-left bg-[var(--violet)]" style={{ scaleX: x }} />;
+  return <motion.div className="h-[2px] origin-left bg-gradient-to-r from-[#00ff88] via-[#00f0ff] to-[#b026ff]" style={{ scaleX: x }} />;
 }
 
 export default function Nav() {
@@ -88,7 +94,7 @@ export default function Nav() {
   useFocusTrap(menuRef, menu);
   const naHistoria = tela === 'aprender';
   const mostrarTrilho = naHistoria && phase === 'parts';
-  const telaAtual = TELAS.find((t) => t.id === tela)!;
+  const telaAtual = TELAS.find((t) => t.id === tela) || { rotulo: 'Início' };
 
   useEffect(() => {
     if (!menu) return;
@@ -113,22 +119,28 @@ export default function Nav() {
       <a href="#conteudo" className="sr-only sr-only-focusable">
         Pular para o conteúdo
       </a>
-      <header className="gutter fixed inset-x-0 top-0 z-40 border-b border-[var(--line)] bg-[rgba(255,255,255,0.94)] pt-[env(safe-area-inset-top,0px)] backdrop-blur-[8px]">
+      <header className="gutter fixed inset-x-0 top-0 z-40 border-b border-[#00ff88]/20 bg-[#090b14]/90 pt-[env(safe-area-inset-top,0px)] backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
         <div className="mx-auto flex h-16 max-w-[1360px] items-center gap-2 xl:gap-3">
           <Marca />
 
           <nav aria-label="Seções do site" className="ml-2 hidden gap-0.5 lg:flex xl:ml-4">
-            {MENU.map((t) => (
-              <LinkTela key={t.id} id={t.id} rotulo={t.rotulo} atual={tela === t.id} />
+            {MENU.map((item) => (
+              <LinkNavegacao
+                key={item.id}
+                item={item}
+                atual={tela === item.id}
+              />
             ))}
           </nav>
 
-          <div className="ml-auto hidden items-center gap-2 lg:flex">
+          <div className="ml-auto hidden items-center gap-3 lg:flex">
             <BuscaGlobal id="busca-topo" />
-            <LoginGoogle />
+            <div className="rounded-xl border border-[#b026ff]/40 bg-[#b026ff]/10 p-0.5 shadow-[0_0_15px_rgba(176,38,255,0.2)]">
+              <LoginGoogle />
+            </div>
           </div>
 
-          <span className="ml-auto min-w-0 truncate text-[0.82rem] font-semibold text-[var(--lilac)] lg:hidden" aria-live="polite">
+          <span className="ml-auto min-w-0 truncate text-[0.82rem] font-semibold text-[#00ff88] lg:hidden" aria-live="polite">
             {rotuloCelular}
           </span>
           <button
@@ -137,11 +149,8 @@ export default function Nav() {
             aria-expanded={menu}
             aria-controls="mobile-menu"
             onClick={() => setMenu(true)}
-            className="btn btn-secundario btn-pequeno shrink-0 lg:hidden"
+            className="rounded-lg border border-gray-800 bg-[#121422] px-3 py-1.5 text-xs font-bold text-gray-200 shrink-0 lg:hidden hover:border-[#00ff88]"
           >
-            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
-              <path d="M4 7h16M4 12h16M4 17h10" />
-            </svg>
             Menu
           </button>
         </div>
@@ -159,23 +168,29 @@ export default function Nav() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="gutter fixed inset-0 z-[70] overflow-y-auto bg-white pb-[max(24px,env(safe-area-inset-bottom,0px))] pt-[env(safe-area-inset-top,0px)]"
+            className="gutter fixed inset-0 z-[70] overflow-y-auto bg-[#090b14] text-white pb-[max(24px,env(safe-area-inset-bottom,0px))] pt-[env(safe-area-inset-top,0px)]"
           >
-            <div className="flex h-16 items-center justify-between">
+            <div className="flex h-16 items-center justify-between border-b border-gray-800">
               <Marca />
-              <button type="button" onClick={() => setMenu(false)} className="btn btn-secundario btn-pequeno">
+              <button type="button" onClick={() => setMenu(false)} className="rounded-lg border border-gray-800 px-3 py-1.5 text-xs text-gray-300">
                 Fechar ×
               </button>
             </div>
-            <div className="mt-3">
+            <div className="mt-4">
               <BuscaGlobal id="busca-menu" aoConcluir={() => setMenu(false)} />
             </div>
             <nav aria-label="Seções do site" className="mt-6">
-              {TELAS.filter((t) => t.id !== 'prontos').map((t) => (
-                <LinkTela key={t.id} id={t.id} rotulo={t.rotulo} atual={tela === t.id} aoClicar={() => setMenu(false)} grande />
+              {MENU.map((item) => (
+                <LinkNavegacao
+                  key={item.id}
+                  item={item}
+                  atual={tela === item.id}
+                  aoClicar={() => setMenu(false)}
+                  grande
+                />
               ))}
             </nav>
-            <div className="mt-6">
+            <div className="mt-6 border-t border-gray-800 pt-4">
               <LoginGoogle />
             </div>
           </motion.div>
@@ -189,25 +204,25 @@ export default function Nav() {
             mostrarTrilho ? 'opacity-100' : 'pointer-events-none opacity-0'
           }`}
         >
-          <span className="mono mb-1 text-[0.66rem] uppercase tracking-[0.14em] text-[var(--muted)]">{active >= 0 ? `${active + 1} de ${PARTS.length}` : ''}</span>
+          <span className="mono mb-1 text-[0.66rem] uppercase tracking-[0.14em] text-gray-500">{active >= 0 ? `${active + 1} de ${PARTS.length}` : ''}</span>
           {PARTS.map((p, i) => (
             <a key={p.id} href={`#part-${p.id}`} className="group flex items-center justify-end gap-3" aria-current={active === i ? 'step' : undefined}>
               <span
                 className={`text-[0.78rem] font-semibold transition-all ${
-                  active === i ? 'text-[var(--fg)] opacity-100' : 'text-[var(--muted)] opacity-0 group-hover:opacity-100'
+                  active === i ? 'text-[#00ff88] opacity-100' : 'text-gray-500 opacity-0 group-hover:opacity-100'
                 }`}
               >
                 {p.name}
               </span>
               <span
                 className={`block h-2 rounded-full transition-all duration-300 ${
-                  active === i ? 'w-6 bg-[var(--violet)]' : i < active ? 'w-2 bg-[var(--fg)]' : 'w-2 bg-[rgba(17,17,17,0.2)] group-hover:bg-[var(--fg)]'
+                  active === i ? 'w-6 bg-[#00ff88] shadow-[0_0_8px_rgba(0,255,136,0.8)]' : i < active ? 'w-2 bg-gray-400' : 'w-2 bg-gray-800 group-hover:bg-gray-400'
                 }`}
               />
             </a>
           ))}
-          <a href="#comparar" className="mt-2 text-[0.75rem] font-semibold text-[var(--lilac)] hover:text-[var(--fg)]">
-            Pular peças ↓
+          <a href="#comparar" className="mt-2 text-[0.75rem] font-semibold text-[#00ff88] hover:text-white">
+            Pular peças →
           </a>
         </nav>
       )}

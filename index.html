@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Konoha HW • Construção & Reforma de Computadores</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Manrope:wght@400;600;700;800&family=Unbounded:wght@700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #08090f;
+      --card-bg: #0d0f19;
+      --card-elevated: #121424;
+      --neon-green: #00ff88;
+      --neon-purple: #b026ff;
+      --neon-cyan: #00f0ff;
+      --text-main: #f9fafb;
+      --text-muted: #9ca3af;
+      --line: rgba(0, 255, 136, 0.18);
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: 'Manrope', system-ui, sans-serif;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+    .display { font-family: 'Unbounded', sans-serif; }
+
+    /* Header */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      background: rgba(8, 9, 15, 0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+      padding: 0.85rem 1.5rem;
+    }
+    .nav-container {
+      max-width: 1240px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 800;
+      text-decoration: none;
+      color: #fff;
+      letter-spacing: -0.02em;
+    }
+    .brand span { color: var(--neon-green); }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.86rem;
+      font-weight: 600;
+      transition: color 0.2s ease;
+    }
+    .nav-links a:hover { color: var(--neon-green); }
+    .btn-login {
+      padding: 0.45rem 1.1rem;
+      border-radius: 999px;
+      border: 1px solid rgba(176, 38, 255, 0.5);
+      background: rgba(176, 38, 255, 0.15);
+      color: #d884ff !important;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      box-shadow: 0 0 12px rgba(176, 38, 255, 0.2);
+    }
+    .btn-login:hover {
+      background: rgba(176, 38, 255, 0.3) !important;
+      color: #fff !important;
+      box-shadow: 0 0 18px rgba(176, 38, 255, 0.4);
+    }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      padding: 8.5rem 1.5rem 5rem;
+      text-align: center;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .hero-glow-1 {
+      position: absolute;
+      top: 10%;
+      left: 20%;
+      width: 450px;
+      height: 450px;
+      background: radial-gradient(circle, rgba(0, 255, 136, 0.12) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: -1;
+    }
+    .hero-glow-2 {
+      position: absolute;
+      top: 25%;
+      right: 15%;
+      width: 480px;
+      height: 480px;
+      background: radial-gradient(circle, rgba(176, 38, 255, 0.12) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: -1;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.9rem;
+      border-radius: 999px;
+      border: 1px solid rgba(0, 255, 136, 0.3);
+      background: rgba(0, 255, 136, 0.1);
+      color: var(--neon-green);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      box-shadow: 0 0 18px rgba(0, 255, 136, 0.2);
+    }
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--neon-green);
+      animation: pulse 1.8s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.3); }
+    }
+    h1 {
+      font-family: 'Unbounded', sans-serif;
+      font-size: clamp(2.2rem, 5vw, 4.2rem);
+      font-weight: 900;
+      line-height: 1.1;
+      margin: 1.5rem 0 1rem;
+      letter-spacing: -0.03em;
+    }
+    .grad-text {
+      background: linear-gradient(135deg, var(--neon-green) 0%, var(--neon-cyan) 45%, var(--neon-purple) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 25px rgba(0, 255, 136, 0.3));
+    }
+    .hero-sub {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      max-width: 720px;
+      margin: 0 auto 2.2rem;
+    }
+    .hero-ctas {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+    }
+    .btn-neon-green {
+      padding: 0.85rem 1.6rem;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--neon-green) 0%, var(--neon-cyan) 100%);
+      color: #000;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      text-decoration: none;
+      box-shadow: 0 0 25px rgba(0, 255, 136, 0.4);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .btn-neon-green:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 35px rgba(0, 255, 136, 0.6);
+    }
+    .btn-neon-purple {
+      padding: 0.85rem 1.6rem;
+      border-radius: 12px;
+      border: 1px solid rgba(176, 38, 255, 0.6);
+      background: rgba(176, 38, 255, 0.15);
+      color: #d884ff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      text-decoration: none;
+      box-shadow: 0 0 20px rgba(176, 38, 255, 0.2);
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+    .btn-neon-purple:hover {
+      transform: translateY(-2px);
+      background: rgba(176, 38, 255, 0.3);
+      color: #fff;
+    }
+
+    /* Métricas */
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      max-width: 1100px;
+      margin: 3.5rem auto 0;
+      padding: 1.5rem;
+      border-radius: 16px;
+      background: rgba(13, 15, 25, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(8px);
+    }
+    .metric-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--neon-green);
+    }
+    .metric-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 0.2rem;
+    }
+
+    /* Seções */
+    section {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 5rem 1.5rem;
+    }
+    .sec-header {
+      border-left: 4px solid var(--neon-green);
+      padding-left: 1.2rem;
+      margin-bottom: 2.5rem;
+    }
+    .sec-header.purple { border-color: var(--neon-purple); }
+    .sec-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--neon-green);
+    }
+    .sec-header.purple .sec-tag { color: var(--neon-purple); }
+    .sec-title {
+      font-family: 'Unbounded', sans-serif;
+      font-size: clamp(1.6rem, 3.2vw, 2.3rem);
+      font-weight: 800;
+      margin-top: 0.4rem;
+    }
+    .sec-sub {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      max-width: 650px;
+      margin-top: 0.4rem;
+    }
+
+    /* Cards Grid */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.8rem;
+    }
+    .pc-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 1.8rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+      position: relative;
+    }
+    .pc-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(0, 255, 136, 0.4);
+      box-shadow: 0 0 30px rgba(0, 255, 136, 0.15);
+    }
+    .pc-card.gamer:hover {
+      border-color: rgba(176, 38, 255, 0.5);
+      box-shadow: 0 0 30px rgba(176, 38, 255, 0.18);
+    }
+    .tier-badge {
+      display: inline-block;
+      padding: 0.25rem 0.65rem;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      background: rgba(0, 255, 136, 0.1);
+      color: var(--neon-green);
+      border: 1px solid rgba(0, 255, 136, 0.25);
+    }
+    .pc-card.gamer .tier-badge {
+      background: rgba(176, 38, 255, 0.15);
+      color: #d884ff;
+      border-color: rgba(176, 38, 255, 0.35);
+    }
+    .pc-name {
+      font-size: 1.2rem;
+      font-weight: 800;
+      margin-top: 0.8rem;
+    }
+    .pc-style {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.2rem;
+    }
+    .price-box {
+      margin: 1.2rem 0;
+      padding: 0.9rem 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .price-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: #fff;
+    }
+    .price-sub {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--neon-green);
+    }
+    .pc-card.gamer .price-sub { color: #d884ff; }
+    .hw-list {
+      list-style: none;
+      margin: 1rem 0;
+      font-size: 0.8rem;
+      color: #d1d5db;
+    }
+    .hw-list li {
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+    .hw-list li span.bullet { color: var(--neon-green); }
+    .pc-card.gamer .hw-list li span.bullet { color: var(--neon-purple); }
+    .problem-box {
+      margin-top: 1rem;
+      padding: 0.85rem;
+      border-radius: 12px;
+      background: rgba(0, 255, 136, 0.04);
+      border: 1px solid rgba(0, 255, 136, 0.15);
+      font-size: 0.78rem;
+      line-height: 1.45;
+      color: #cbd5e1;
+    }
+    .pc-card.gamer .problem-box {
+      background: rgba(176, 38, 255, 0.05);
+      border-color: rgba(176, 38, 255, 0.2);
+    }
+    .problem-box strong {
+      display: block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      color: var(--neon-green);
+      margin-bottom: 0.3rem;
+    }
+    .pc-card.gamer .problem-box strong { color: #d884ff; }
+    .card-btn {
+      display: block;
+      width: 100%;
+      margin-top: 1.4rem;
+      padding: 0.75rem;
+      border-radius: 10px;
+      border: 1px solid rgba(0, 255, 136, 0.35);
+      background: rgba(0, 255, 136, 0.1);
+      color: var(--neon-green);
+      text-align: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    .card-btn:hover {
+      background: var(--neon-green);
+      color: #000;
+    }
+    .pc-card.gamer .card-btn {
+      border-color: rgba(176, 38, 255, 0.45);
+      background: rgba(176, 38, 255, 0.12);
+      color: #d884ff;
+    }
+    .pc-card.gamer .card-btn:hover {
+      background: var(--neon-purple);
+      color: #fff;
+    }
+
+    /* Bloco 3: Exploded View & Estimator */
+    .exploded-container {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 2rem;
+      align-items: start;
+    }
+    @media (max-width: 900px) {
+      .exploded-container { grid-template-columns: 1fr; }
+    }
+    .exploded-view {
+      background: var(--card-bg);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 0 35px rgba(0, 255, 136, 0.08);
+    }
+    .layer-card {
+      background: #111422;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 1rem 1.2rem;
+      margin-bottom: 0.8rem;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+    .layer-card:hover {
+      border-color: var(--neon-purple);
+      transform: translateX(4px);
+    }
+    .layer-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .layer-title {
+      font-weight: 700;
+      font-size: 0.92rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .layer-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--neon-green);
+    }
+    .layer-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 0.4rem;
+    }
+
+    /* Estimator Form */
+    .estimator-box {
+      background: #0f111c;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 1.8rem;
+    }
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    .form-group label {
+      display: block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-bottom: 0.35rem;
+    }
+    .form-group select {
+      width: 100%;
+      background: #161828;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      padding: 0.65rem 0.85rem;
+      color: #fff;
+      font-size: 0.8rem;
+      outline: none;
+    }
+    .form-group select:focus {
+      border-color: var(--neon-green);
+    }
+    .est-total-box {
+      margin-top: 1.5rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .est-price {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--neon-green);
+      text-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+    }
+
+    /* Depoimentos */
+    .depoimentos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+    .depoimento-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      padding: 1.6rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .stars { color: #f59e0b; margin-bottom: 0.8rem; }
+    .dep-text {
+      font-size: 0.82rem;
+      color: #cbd5e1;
+      font-style: italic;
+      line-height: 1.5;
+    }
+    .dep-author {
+      margin-top: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .dep-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #181b2a;
+      display: grid;
+      place-items: center;
+      font-size: 1.2rem;
+    }
+    .dep-name { font-size: 0.88rem; font-weight: 700; }
+    .dep-role { font-size: 0.72rem; color: var(--text-muted); }
+
+    /* FAQ Drawer */
+    #faq-drawer {
+      position: fixed;
+      top: 0;
+      right: -420px;
+      width: 400px;
+      max-width: 90vw;
+      height: 100vh;
+      background: rgba(10, 12, 20, 0.96);
+      border-left: 1px solid var(--neon-green);
+      backdrop-filter: blur(16px);
+      z-index: 60;
+      transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: -10px 0 40px rgba(0, 0, 0, 0.8);
+      display: flex;
+      flex-direction: column;
+    }
+    #faq-drawer.open { right: 0; }
+    .faq-drawer-head {
+      padding: 1.4rem 1.6rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .faq-drawer-body {
+      padding: 1.4rem 1.6rem;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .faq-item {
+      background: #121424;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      margin-bottom: 0.8rem;
+      overflow: hidden;
+    }
+    .faq-q {
+      padding: 0.9rem 1rem;
+      font-weight: 600;
+      font-size: 0.82rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+    }
+    .faq-a {
+      padding: 0 1rem 0.9rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+      display: none;
+    }
+    .faq-item.active .faq-a { display: block; }
+    .faq-float-btn {
+      position: fixed;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 45;
+      background: rgba(12, 14, 24, 0.92);
+      border: 1px solid var(--neon-green);
+      border-right: none;
+      border-radius: 12px 0 0 12px;
+      padding: 0.9rem 0.6rem;
+      color: var(--neon-green);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 800;
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(0, 255, 136, 0.25);
+    }
+
+    /* FAB */
+    .fab-whatsapp {
+      position: fixed;
+      bottom: 1.8rem;
+      right: 1.8rem;
+      z-index: 45;
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--neon-green) 0%, var(--neon-cyan) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #000;
+      box-shadow: 0 0 25px rgba(0, 255, 136, 0.6);
+      text-decoration: none;
+      transition: transform 0.2s ease;
+    }
+    .fab-whatsapp:hover { transform: scale(1.1); }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      background: #06070b;
+      padding: 3.5rem 1.5rem 2rem;
+      margin-top: 4rem;
+    }
+    .footer-content {
+      max-width: 1240px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+    }
+    .footer-col h4 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+      color: var(--neon-green);
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 0.5rem; }
+    .footer-col ul a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.8rem;
+      transition: color 0.2s ease;
+    }
+    .footer-col ul a:hover { color: #fff; }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="nav-container">
+      <a href="#inicio" class="brand">Konoha<span>.</span>HW</a>
+      <ul class="nav-links">
+        <li><a href="#inicio">Início</a></li>
+        <li><a href="#estudo-livre">Estudo Livre</a></li>
+        <li><a href="#escritorio">Escritório</a></li>
+        <li><a href="#gamer">Gamer</a></li>
+        <li><a href="#montagem-livre">Montagem Livre</a></li>
+        <li><a href="#login" class="btn-login" onclick="abrirLogin()">Login</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Botão Flutuante FAQ Lateral -->
+  <button class="faq-float-btn" onclick="toggleFaq()">⚡ FAQ LATERAL</button>
+
+  <!-- FAQ Drawer -->
+  <div id="faq-drawer">
+    <div class="faq-drawer-head">
+      <h3 class="mono" style="font-size: 0.9rem; color: var(--neon-green);">// FAQ RÁPIDO</h3>
+      <button onclick="toggleFaq()" style="background: none; border: none; color: #fff; font-size: 1.2rem; cursor: pointer;">✕</button>
+    </div>
+    <div class="faq-drawer-body">
+      <div class="faq-item active" onclick="this.classList.toggle('active')">
+        <div class="faq-q">Como é garantida a compatibilidade? <span>+</span></div>
+        <div class="faq-a">Validamos soquete físico da CPU, chipset da placa-mãe, padrão de RAM (DDR4 vs DDR5), folga de 25% na fonte e dimensões físicas no gabinete.</div>
+      </div>
+      <div class="faq-item" onclick="this.classList.toggle('active')">
+        <div class="faq-q">Como funciona a reforma de PCs? <span>+</span></div>
+        <div class="faq-a">Diagnóstico em bancada, troca de pasta térmica por composto de alta condutividade, desoxidação, cable re-routing e upgrades pontuais de SSD e RAM.</div>
+      </div>
+      <div class="faq-item" onclick="this.classList.toggle('active')">
+        <div class="faq-q">Por que o Cable Management importa? <span>+</span></div>
+        <div class="faq-a">O roteamento limpo de cabos atrás da placa-mãe desobstrui o fluxo de ar, reduzindo as temperaturas em até 8°C e evitando acúmulo de poeira.</div>
+      </div>
+      <div class="faq-item" onclick="this.classList.toggle('active')">
+        <div class="faq-q">Quais os testes antes da entrega? <span>+</span></div>
+        <div class="faq-a">24h contínuas de Prime95 (CPU), FurMark (GPU) e MemTest86 (RAM), garantindo 0% de tela azul ou instabilidade.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero" id="inicio">
+    <div class="hero-glow-1"></div>
+    <div class="hero-glow-2"></div>
+    <div class="badge">
+      <span class="badge-dot"></span>
+      Construção & Reforma de Computadores • Cyberpunk Edgerunners
+    </div>
+    <h1>
+      Construa e Reforme com<br>
+      <span class="grad-text">Engenharia de Precisão</span>
+    </h1>
+    <p class="hero-sub">
+      Da máquina silenciosa para produtividade no escritório à estação gamer extrema de alto FPS. Peças 100% validadas, cable management cirúrgico e testes de estresse de 24h.
+    </p>
+    <div class="hero-ctas">
+      <a href="#escritorio" class="btn-neon-green">Setups de Escritório ↓</a>
+      <a href="#gamer" class="btn-neon-purple">Setups Gamer ↓</a>
+      <a href="#montagem-livre" class="btn-neon-green" style="background: none; border: 1px solid var(--neon-cyan); color: var(--neon-cyan);">PC Desmontado 3D 🌀</a>
+    </div>
+
+    <div class="metrics">
+      <div>
+        <div class="metric-val">0%</div>
+        <div class="metric-desc">Gargalo ou Tela Azul</div>
+      </div>
+      <div>
+        <div class="metric-val" style="color: var(--neon-cyan);">24 Horas</div>
+        <div class="metric-desc">Testes de Estresse Reais</div>
+      </div>
+      <div>
+        <div class="metric-val" style="color: var(--neon-purple);">Até -8°C</div>
+        <div class="metric-desc">Com Cable Management</div>
+      </div>
+      <div>
+        <div class="metric-val" style="color: #ff007f;">100%</div>
+        <div class="metric-desc">Compatibilidade Física</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bloco 1: Computadores Escritório (Preço Crescente) -->
+  <section id="escritorio">
+    <div class="sec-header">
+      <span class="sec-tag">BLOCO 01 • PRODUTIVIDADE & SILÊNCIO</span>
+      <h2 class="sec-title">Computadores para Escritório</h2>
+      <p class="sec-sub">Estilos modernos para produtividade: compactos, silenciosos, com baixo consumo e inicialização em 7 segundos.</p>
+    </div>
+
+    <div class="cards-grid">
+      <!-- Nível 1 -->
+      <div class="pc-card">
+        <div>
+          <span class="tier-badge">Nível 01 • Básico</span>
+          <h3 class="pc-name">Home Office & Estudos Slim</h3>
+          <p class="pc-style">Estilo Minimalista & Silencioso</p>
+          <div class="price-box">
+            <div class="price-num">R$ 1.890,00</div>
+            <div class="price-sub">ou 10x de R$ 189,00 sem juros</div>
+          </div>
+          <ul class="hw-list">
+            <li><span class="bullet">✓</span> AMD Ryzen 3 3200G (4C/4T c/ Vega 8)</li>
+            <li><span class="bullet">✓</span> 16GB (2x8GB) DDR4 3200MHz Dual Channel</li>
+            <li><span class="bullet">✓</span> Placa-Mãe MSI A520M-A PRO (AM4)</li>
+            <li><span class="bullet">✓</span> SSD NVMe M.2 512GB Kingston (3500MB/s)</li>
+            <li><span class="bullet">✓</span> Fonte MSI MAG 500W 80 Plus</li>
+          </ul>
+          <div class="problem-box">
+            <strong>Problema que resolve:</strong>
+            Acaba com travamentos no Excel, PDFs pesados e reuniões no Teams. Liga instantaneamente e não produz ruído.
+          </div>
+        </div>
+        <a href="#montagem-livre" class="card-btn">Personalizar no Montador</a>
+      </div>
+
+      <!-- Nível 2 -->
+      <div class="pc-card">
+        <div>
+          <span class="tier-badge">Nível 02 • Intermediário</span>
+          <h3 class="pc-name">Estação Corporativa Multitarefa</h3>
+          <p class="pc-style">Estilo Corporativo Dual-Monitor</p>
+          <div class="price-box">
+            <div class="price-num">R$ 2.990,00</div>
+            <div class="price-sub">ou 10x de R$ 299,00 sem juros</div>
+          </div>
+          <ul class="hw-list">
+            <li><span class="bullet">✓</span> Intel Core i5-12400 (6C/12T UHD 730)</li>
+            <li><span class="bullet">✓</span> 16GB DDR4 3200MHz Kingston Fury</li>
+            <li><span class="bullet">✓</span> Placa-Mãe ASUS Prime H610M-E D4</li>
+            <li><span class="bullet">✓</span> SSD NVMe M.2 1TB Gen4 (3500MB/s)</li>
+            <li><span class="bullet">✓</span> Fonte MSI MAG 550W 80 Plus Bronze</li>
+          </ul>
+          <div class="problem-box">
+            <strong>Problema que resolve:</strong>
+            Suporta 40+ abas no navegador, sistemas ERP pesados e 2 monitores 4K simultâneos com zero lentidão.
+          </div>
+        </div>
+        <a href="#montagem-livre" class="card-btn">Personalizar no Montador</a>
+      </div>
+
+      <!-- Nível 3 -->
+      <div class="pc-card">
+        <div>
+          <span class="tier-badge">Nível 03 • Avançado</span>
+          <h3 class="pc-name">Workstation AutoCAD & Revit Pro</h3>
+          <p class="pc-style">Estilo Engenharia & Modelagem 2D/3D</p>
+          <div class="price-box">
+            <div class="price-num">R$ 4.790,00</div>
+            <div class="price-sub">ou 10x de R$ 479,00 sem juros</div>
+          </div>
+          <ul class="hw-list">
+            <li><span class="bullet">✓</span> AMD Ryzen 7 5700X (8C/16T até 4.6GHz)</li>
+            <li><span class="bullet">✓</span> NVIDIA GeForce RTX 3050 6GB (Aceleração CUDA)</li>
+            <li><span class="bullet">✓</span> 32GB (2x16GB) DDR4 3200MHz Dual Channel</li>
+            <li><span class="bullet">✓</span> SSD NVMe M.2 1TB Kingston NV2</li>
+            <li><span class="bullet">✓</span> Air Cooler DeepCool AG400 150W TDP</li>
+          </ul>
+          <div class="problem-box">
+            <strong>Problema que resolve:</strong>
+            Aceleração gráfica por hardware que impede fechamento abrupto e travamento em viewport 3D do AutoCAD e Revit.
+          </div>
+        </div>
+        <a href="#montagem-livre" class="card-btn">Personalizar no Montador</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bloco 2: Computadores Gamer (Preço Crescente) -->
+  <section id="gamer">
+    <div class="sec-header purple">
+      <span class="sec-tag">BLOCO 02 • ALTO FPS & RAY TRACING</span>
+      <h2 class="sec-title">Computadores Gamer</h2>
+      <p class="sec-sub">Máquinas construídas para altas taxas de quadros em 144Hz/240Hz, suporte a DLSS 3 e túnel de vento desobstruído.</p>
+    </div>
+
+    <div class="cards-grid">
+      <!-- Nível 1 -->
+      <div class="pc-card gamer">
+        <div>
+          <span class="tier-badge">Nível 01 • Entrada</span>
+          <h3 class="pc-name">Gamer Hunter eSports 1080p</h3>
+          <p class="pc-style">Setup Competitivo 144Hz</p>
+          <div class="price-box">
+            <div class="price-num">R$ 3.250,00</div>
+            <div class="price-sub">ou 10x de R$ 325,00 sem juros</div>
+          </div>
+          <ul class="hw-list">
+            <li><span class="bullet">⚡</span> Intel Core i3-12100F (4C/8T 4.3GHz)</li>
+            <li><span class="bullet">⚡</span> NVIDIA GeForce RTX 3050 6GB GDDR6</li>
+            <li><span class="bullet">⚡</span> 16GB (2x8GB) DDR4 3200MHz Dual Channel</li>
+            <li><span class="bullet">⚡</span> SSD NVMe M.2 512GB Kingston</li>
+            <li><span class="bullet">⚡</span> Gabinete Mesh com 3 Fans RGB</li>
+          </ul>
+          <div class="problem-box">
+            <strong>Problema que resolve:</strong>
+            Fluidez estável em Valorant (240+ FPS) e CS2 sem quedas bruscas de frames na hora do tiroteio.
+          </div>
+        </div>
+        <a href="#montagem-livre" class="card-btn">Configurar Setup Gamer</a>
+      </div>
+
+      <!-- Nível 2 -->
+      <div class="pc-card gamer">
+        <div>
+          <span class="tier-badge">Nível 02 • Intermediário</span>
+          <h3 class="pc-name">Gamer Phantom High FPS & DLSS 3</h3>
+          <p class="pc-style">Setup Ray Tracing & AAA Ultra</p>
+          <div class="price-box">
+            <div class="price-num">R$ 4.890,00</div>
+            <div class="price-sub">ou 10x de R$ 489,00 sem juros</div>
+          </div>
+          <ul class="hw-list">
+            <li><span class="bullet">⚡</span> AMD Ryzen 5 5600 (6C/12T até 4.4GHz)</li>
+            <li><span class="bullet">⚡</span> NVIDIA GeForce RTX 4060 8GB (DLSS 3)</li>
+            <li><span class="bullet">⚡</span> 16GB DDR4 3600MHz Kingston Fury</li>
+            <li><span class="bullet">⚡</span> SSD NVMe M.2 1TB Gen4 Kingston NV2</li>
+            <li><span class="bullet">⚡</span> Cooler DeepCool AG400 ARGB Térmico</li>
+          </ul>
+          <div class="problem-box">
+            <strong>Problema que resolve:</strong>
+            O DLSS 3 gera quadros via IA, dobrando o FPS em lançamentos pesados como Cyberpunk 2077 mantendo a placa fria.
+          </div>
+        </div>
+        <a href="#montagem-livre" class="card-btn">Configurar Setup Gamer</a>
+      </div>
+
+      <!-- Nível 3 -->
+      <div class="pc-card gamer">
+        <div>
+          <span class="tier-badge">Nível 03 • Elite</span>
+          <h3 class="pc-name">Cyber Titan 1440p & 4K Ultra</h3>
+          <p class="pc-style">Setup Entusiasta 1440p & Streaming</p>
+          <div class="price-box">
+            <div class="price-num">R$ 7.950,00</div>
+            <div class="price-sub">ou 10x de R$ 795,00 sem juros</div>
+          </div>
+          <ul class="hw-list">
+            <li><span class="bullet">⚡</span> AMD Ryzen 7 5700X3D (96MB 3D V-Cache)</li>
+            <li><span class="bullet">⚡</span> NVIDIA GeForce RTX 4070 Super 12GB GDDR6X</li>
+            <li><span class="bullet">⚡</span> 32GB (2x16GB) DDR4 3600MHz Corsair</li>
+            <li><span class="bullet">⚡</span> SSD NVMe 2TB Kingston KC3000 (7000MB/s)</li>
+            <li><span class="bullet">⚡</span> Water Cooler 240mm ARGB Duplo</li>
+          </ul>
+          <div class="problem-box">
+            <strong>Problema que resolve:</strong>
+            O cache 3D garante 1% low altíssimo, eliminando qualquer micro-travamento em 1440p com Ray Tracing ligado.
+          </div>
+        </div>
+        <a href="#montagem-livre" class="card-btn">Configurar Setup Gamer</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bloco 3: Montagem Livre & O PC Desmontado -->
+  <section id="montagem-livre">
+    <div class="sec-header">
+      <span class="sec-tag">BLOCO 03 • MONTAGEM LIVRE & REFORMA</span>
+      <h2 class="sec-title">O PC Desmontado: Vista Explodida</h2>
+      <p class="sec-sub">Inspecione os módulos de hardware, simule a compatibilidade e obtenha o orçamento em tempo real.</p>
+    </div>
+
+    <div class="exploded-container">
+      <!-- Vista Explodida das Peças -->
+      <div class="exploded-view">
+        <h3 class="mono" style="font-size: 0.95rem; margin-bottom: 1.2rem; color: var(--neon-green);">
+          // VISTA EXPLODIDA EM CAMADAS
+        </h3>
+
+        <div class="layer-card">
+          <div class="layer-head">
+            <span class="layer-title"><span style="color: var(--neon-green);">●</span> Gabinete & Chassi Mesh</span>
+            <span class="layer-tag">CAMADA 01</span>
+          </div>
+          <p class="layer-desc">Estrutura em aço SPCC e vidro temperado. Túnel isolado para fonte e furação para cable routing.</p>
+        </div>
+
+        <div class="layer-card">
+          <div class="layer-head">
+            <span class="layer-title"><span style="color: var(--neon-cyan);">●</span> Placa-Mãe & VRMs</span>
+            <span class="layer-tag">CAMADA 02</span>
+          </div>
+          <p class="layer-desc">Backbone do sistema com dissipadores reforçados de alumínio e slot PCIe blindado contra peso de GPU.</p>
+        </div>
+
+        <div class="layer-card">
+          <div class="layer-head">
+            <span class="layer-title"><span style="color: var(--neon-purple);">●</span> CPU & Refrigeração Térmica</span>
+            <span class="layer-tag">CAMADA 03</span>
+          </div>
+          <p class="layer-desc">Pasta térmica à base de prata com 12.8 W/m-K e cooler torre de 4 heatpipes de cobre.</p>
+        </div>
+
+        <div class="layer-card">
+          <div class="layer-head">
+            <span class="layer-title"><span style="color: #ff007f;">●</span> Placa de Vídeo (GPU Dedicada)</span>
+            <span class="layer-tag">CAMADA 04</span>
+          </div>
+          <p class="layer-desc">Alimentação independente com cabo PCIe individual de 8 pinos, sem adaptadores tipo daisy-chain.</p>
+        </div>
+
+        <div class="layer-card">
+          <div class="layer-head">
+            <span class="layer-title"><span style="color: #facc15;">●</span> Cable Management & Fonte</span>
+            <span class="layer-tag">CAMADA 05</span>
+          </div>
+          <p class="layer-desc">Presilhas de velcro individuais atrás da bandeja. Fluxo de ar 100% desobstruído com até -8°C de temperatura.</p>
+        </div>
+      </div>
+
+      <!-- Calculadora de Orçamento e Compatibilidade -->
+      <div class="estimator-box">
+        <h3 class="mono" style="font-size: 0.95rem; margin-bottom: 1.2rem; color: #fff;">
+          // ESTIMATIVA DE PEÇAS COMPATÍVEIS
+        </h3>
+
+        <div class="form-group">
+          <label>1. Processador (CPU):</label>
+          <select id="sel-cpu" onchange="calcularOrcamento()">
+            <option value="580" data-watts="65">Intel Core i3-12100F — R$ 580</option>
+            <option value="840" data-watts="65" selected>AMD Ryzen 5 5600 — R$ 840</option>
+            <option value="920" data-watts="65">Intel Core i5-12400F — R$ 920</option>
+            <option value="1490" data-watts="105">AMD Ryzen 7 5700X3D — R$ 1.490</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>2. Placa de Vídeo (GPU):</label>
+          <select id="sel-gpu" onchange="calcularOrcamento()">
+            <option value="0" data-watts="15">Vídeo Integrado (Básico) — R$ 0</option>
+            <option value="1290" data-watts="70">GeForce RTX 3050 6GB — R$ 1.290</option>
+            <option value="2190" data-watts="115" selected>GeForce RTX 4060 8GB — R$ 2.190</option>
+            <option value="4490" data-watts="220">GeForce RTX 4070 Super 12GB — R$ 4.490</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>3. Memória RAM:</label>
+          <select id="sel-ram" onchange="calcularOrcamento()">
+            <option value="280" selected>16GB (2x8GB) DDR4 3200MHz — R$ 280</option>
+            <option value="540">32GB (2x16GB) DDR4 3600MHz — R$ 540</option>
+            <option value="890">32GB (2x16GB) DDR5 6000MHz — R$ 890</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>4. Armazenamento SSD:</label>
+          <select id="sel-ssd" onchange="calcularOrcamento()">
+            <option value="230">SSD NVMe M.2 500GB — R$ 230</option>
+            <option value="390" selected>SSD NVMe M.2 1TB Gen4 — R$ 390</option>
+            <option value="890">SSD NVMe M.2 2TB Gen4 — R$ 890</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>5. Fonte de Alimentação:</label>
+          <select id="sel-psu" onchange="calcularOrcamento()">
+            <option value="320">MSI MAG 550W Bronze — R$ 320</option>
+            <option value="390" selected>MSI MAG 650W Bronze — R$ 390</option>
+            <option value="690">Corsair 750W Gold Modular — R$ 690</option>
+          </select>
+        </div>
+
+        <!-- Indicador de Compatibilidade -->
+        <div style="background: #141726; padding: 0.8rem; border-radius: 10px; margin-top: 1rem; font-size: 0.75rem; border: 1px solid rgba(0, 255, 136, 0.2);">
+          <span style="color: var(--neon-green); font-weight: bold;">✓ 100% Compatível:</span> Soquete alinhado, folga térmica e fonte com margem de +30%.
+        </div>
+
+        <div class="est-total-box">
+          <div>
+            <span class="mono" style="font-size: 0.72rem; color: var(--text-muted);">TOTAL ESTIMADO:</span>
+            <div style="font-size: 0.7rem; color: #64748b;">(Inclui Placa-Mãe + Gabinete + Coolers)</div>
+          </div>
+          <div class="est-price" id="total-estimado">R$ 5.040,00</div>
+        </div>
+
+        <a href="https://wa.me/5511999999999" target="_blank" class="btn-neon-green" style="display: block; width: 100%; text-align: center; margin-top: 1.2rem;">
+          Solicitar Este Setup
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Depoimentos -->
+  <section>
+    <div style="text-align: center; margin-bottom: 3rem;">
+      <span class="sec-tag">PROVA SOCIAL & CONFIANÇA</span>
+      <h2 class="sec-title">Quem construiu ou reformou com a gente</h2>
+    </div>
+
+    <div class="depoimentos-grid">
+      <div class="depoimento-card">
+        <div>
+          <div class="stars">★★★★★</div>
+          <p class="dep-text">"Meu PC levava quase 5 minutos para ligar e travava com PDFs pesados. O setup de escritório abre meus processos num piscar de olhos e é tão silencioso que nem parece ligado."</p>
+        </div>
+        <div class="dep-author">
+          <div class="dep-avatar">👩‍💼</div>
+          <div>
+            <div class="dep-name">Beatriz Mendes</div>
+            <div class="dep-role">Advogada • PC Escritório</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="depoimento-card">
+        <div>
+          <div class="stars">★★★★★</div>
+          <p class="dep-text">"Saí de 70 FPS instáveis para 280+ FPS cravados no Valorant. A temperatura fica em 62°C mesmo jogando o dia inteiro no verão. O cable management atrás ficou cirúrgico!"</p>
+        </div>
+        <div class="dep-author">
+          <div class="dep-avatar">🎮</div>
+          <div>
+            <div class="dep-name">Lucas 'Kael' Santana</div>
+            <div class="dep-role">Jogador Competitivo • PC Gamer</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="depoimento-card">
+        <div>
+          <div class="stars">★★★★★</div>
+          <p class="dep-text">"Eu ia gastar 9 mil reais num PC novo. Fizeram a reforma do meu desktop trocando pasta térmica, organizando cabos e trocando só a GPU e SSD. Economizei 60%!"</p>
+        </div>
+        <div class="dep-author">
+          <div class="dep-avatar">📐</div>
+          <div>
+            <div class="dep-name">Rodrigo Prado</div>
+            <div class="dep-role">Arquiteto • Reforma Técnica</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sobre Quem Criou -->
+  <section style="padding-top: 1rem;">
+    <div style="background: linear-gradient(180deg, #101322 0%, #0a0c16 100%); border: 1px solid var(--line); border-radius: 20px; padding: 2.5rem; text-align: center; max-width: 800px; margin: 0 auto;">
+      <span class="sec-tag">SOBRE O PROJETO</span>
+      <h3 style="font-family: 'Unbounded', sans-serif; font-size: 1.4rem; margin: 0.6rem 0 1rem;">Engenharia de Software & Hardware Transparente</h3>
+      <p style="font-size: 0.86rem; color: var(--text-muted); line-height: 1.6;">
+        Desenvolvido por acadêmicos e entusiastas de Engenharia de Software focados em arquitetura de hardware. Nosso objetivo é democratizar a montagem e reforma de computadores sem peças remarcadas, sem superfaturamento e com testes de bancada 100% científicos.
+      </p>
+    </div>
+  </section>
+
+  <!-- Botão Flutuante WhatsApp -->
+  <a href="https://wa.me/5511999999999" target="_blank" class="fab-whatsapp" title="Falar no WhatsApp">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86.173.086.275.072.376-.044.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824z"/>
+    </svg>
+  </a>
+
+  <!-- Rodapé -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-col">
+        <a href="#inicio" class="brand" style="font-size: 1rem;">Konoha<span>.</span>HW</a>
+        <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.6rem; line-height: 1.5;">
+          Plataforma de construção, simulação e reforma de computadores.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Navegação</h4>
+        <ul>
+          <li><a href="#inicio">Início</a></li>
+          <li><a href="#escritorio">Escritório</a></li>
+          <li><a href="#gamer">Gamer</a></li>
+          <li><a href="#montagem-livre">Montagem Livre</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Garantia</h4>
+        <ul>
+          <li><a href="javascript:void(0)">Cable Management em Velcro</a></li>
+          <li><a href="javascript:void(0)">Bancada de Burn-in 24h</a></li>
+          <li><a href="javascript:void(0)">Zero Tela Azul</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Redes Sociais</h4>
+        <ul>
+          <li><a href="https://github.com/ViniciusEstev3s/pc-builder" target="_blank">GitHub</a></li>
+          <li><a href="https://discord.com" target="_blank">Discord</a></li>
+          <li><a href="https://instagram.com" target="_blank">Instagram</a></li>
+          <li><a href="https://youtube.com" target="_blank">YouTube</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function toggleFaq() {
+      document.getElementById('faq-drawer').classList.toggle('open');
+    }
+    function abrirLogin() {
+      alert('Autenticação com Neon / Google Cloud ativa. Conecte sua conta para salvar orçamentos.');
+    }
+    function calcularOrcamento() {
+      const cpu = parseFloat(document.getElementById('sel-cpu').value);
+      const gpu = parseFloat(document.getElementById('sel-gpu').value);
+      const ram = parseFloat(document.getElementById('sel-ram').value);
+      const ssd = parseFloat(document.getElementById('sel-ssd').value);
+      const psu = parseFloat(document.getElementById('sel-psu').value);
+      const base = 950; // Placa-mãe + gabinete + cooler
+      const total = cpu + gpu + ram + ssd + psu + base;
+      document.getElementById('total-estimado').innerText = 'R$ ' + total.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+    }
+  </script>
+</body>
+</html>
